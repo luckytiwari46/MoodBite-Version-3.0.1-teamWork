@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-export default function HeroFoodCard({ suggestedFood, feedbackHandler, source, confidence, imageUrl, price, vector }) {
+export default function HeroFoodCard({ suggestedFood, feedbackHandler, source, confidence, imageUrl, price, calories, vector }) {
     const [imgSrc, setImgSrc] = useState(imageUrl || null);
     const [loading, setLoading] = useState(!imageUrl);
     const [feedback, setFeedback] = useState(null);
@@ -117,7 +117,16 @@ export default function HeroFoodCard({ suggestedFood, feedbackHandler, source, c
                 <h2 className="text-3xl font-bold text-white mb-1 drop-shadow-md">
                     {suggestedFood} {price && <span className="text-xl text-amber-300 ml-2">|| ₹{price}</span>}
                 </h2>
-                <div className="flex items-center gap-3 mb-6">
+                {/* Calories display */}
+                {calories && !isBasicItem && (
+                    <div className="flex items-center gap-1.5 text-orange-200/90 bg-orange-500/10 px-3 py-1 pb-[5px] rounded-full border border-orange-500/30 mb-2 mt-1 shadow-lg shadow-orange-900/20 backdrop-blur-sm">
+                        <span className="text-sm">🔥</span>
+                        <span className="text-xs font-bold tracking-wide">
+                            {calories} kcal
+                        </span>
+                    </div>
+                )}
+                <div className="flex items-center gap-3 mb-6 mt-1">
                     {!isBasicItem && <p className="text-xs text-gray-300 uppercase tracking-widest">{source || "AI Chef"}</p>}
                 </div>
 

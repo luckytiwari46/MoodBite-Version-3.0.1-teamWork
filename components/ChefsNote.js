@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 
-export default function ChefsNote({ reason, otherSuggestions, trajectory, explanation, userInput, healthAdvice }) {
+export default function ChefsNote({ reason, otherSuggestions, trajectory, explanation, userInput, healthAdvice, moodCondition, suggestedCalorieRange, healthPurpose }) {
     const [showOrderPopup, setShowOrderPopup] = useState(false);
 
     // Delivery Helpers
@@ -66,30 +66,27 @@ export default function ChefsNote({ reason, otherSuggestions, trajectory, explan
                     </p>
                 </div>
 
-                {/* Section 2: AI Insight (Level 4 & 6) */}
-                {(trajectory || (explanation && explanation.length > 0)) && (
-                    <div className="bg-black/20 rounded-lg p-3">
-                        <h4 className="text-xs font-bold text-indigo-400 uppercase tracking-wider mb-2 flex items-center">
-                            🧠 AI Insight
-                        </h4>
-
-                        {trajectory && (
-                            <div className="flex items-center text-xs text-white mb-2">
-                                <span className="mr-2 text-base">{getTrendIcon(trajectory.trend)}</span>
-                                <span className="font-semibold">{trajectory.trend}: </span>
-                                <span className="ml-1 opacity-70">{trajectory.description}</span>
-                            </div>
-                        )}
-
-                        {explanation && (
-                            <ul className="list-disc list-inside space-y-1">
-                                {explanation.map((item, i) => (
-                                    <li key={i} className="text-[10px] text-gray-400">{item}</li>
-                                ))}
-                            </ul>
-                        )}
+                {/* Section 2: Health Benefit Insight */}
+                <div className="bg-black/20 rounded-lg p-4 border-l-4 border-indigo-500/50 space-y-3">
+                    <h4 className="text-xs font-bold text-indigo-400 uppercase tracking-wider flex items-center">
+                        🌿 Health & Mood Benefit
+                    </h4>
+                    
+                    <div className="bg-white/5 rounded p-3 text-sm text-gray-300">
+                        <div className="font-bold text-white mb-2 pb-2 border-b border-white/10">Mood – Calories – Food Recommendation</div>
+                        
+                        <div className="grid grid-cols-3 gap-2 text-xs">
+                            <div className="text-gray-400 font-medium">Mood / Condition:</div>
+                            <div className="col-span-2 text-white">{moodCondition || "Balanced Mood"}</div>
+                            
+                            <div className="text-gray-400 font-medium">Suggested Calories:</div>
+                            <div className="col-span-2 text-white">{suggestedCalorieRange || "200-400 kcal"}</div>
+                            
+                            <div className="text-gray-400 font-medium">Health Purpose:</div>
+                            <div className="col-span-2 text-emerald-300">{healthPurpose || "General wellness"}</div>
+                        </div>
                     </div>
-                )}
+                </div>
 
                 {otherSuggestions && otherSuggestions.length > 0 && (
                     <div>

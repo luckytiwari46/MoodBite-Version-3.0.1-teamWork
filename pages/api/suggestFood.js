@@ -12,9 +12,12 @@ export default async function handler(req, res) {
 
     const { text, ingredients, moodOverride, moodHistory } = req.body;
 
-    // 1. EXTRACT FILTERS (Doctor & Budget Mode)
+    // 1. EXTRACT FILTERS (Doctor, Budget, and Calories Mode)
     const budgetMatch = text.match(/(\d+)\s*(rs|rupees|bucks|inr)/i);
     const budget = budgetMatch ? parseInt(budgetMatch[1]) : null;
+
+    const calMatch = text.match(/(\d+)\s*(kcal|calories|cal)\b/i);
+    const maxCalories = calMatch ? parseInt(calMatch[1]) : null;
 
     const healthFilters = [];
     if (text.match(/diabetes|sugar/i)) healthFilters.push('sugar');
@@ -37,7 +40,7 @@ export default async function handler(req, res) {
 
     // 3. REASONING & FOOD SELECTION
     // CORE SYNC: Call the food engine with all parameters
-    const foodData = getFoodSuggestion(judgment.mood, text, ingredients, budget, healthFilters);
+    const foodData = getFoodSuggestion(judgment.mood, text, ingredients, budget, healthFilters, maxCalories);
 
     const reason = generateReason(
         judgment.mood,
@@ -61,10 +64,14 @@ export default async function handler(req, res) {
         source: judgment.source,
         imageUrl: foodData.imageUrl,
         price: foodData.price,
+        calories: foodData.calories,
         otherSuggestions: foodData.otherSuggestions,
         explanation: xaiExplanation,
         trajectory: trajectory,
-        healthAdvice: foodData.healthAdvice
+        healthAdvice: foodData.healthAdvice,
+        moodCondition: foodData.moodCondition,
+        suggestedCalorieRange: foodData.suggestedCalorieRange,
+        healthPurpose: foodData.healthPurpose
     };
 
     res.status(200).json(response);

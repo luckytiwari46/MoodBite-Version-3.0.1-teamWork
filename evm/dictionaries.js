@@ -29,10 +29,10 @@ export const EMOTION_LEXICON = {
     disgust: ["disgust", "disgusted", "gross", "yuck", "sick", "nasty", "revolting", "repulsive"],
     disappointment: ["disappointed", "let down", "expectation", "failed", "sucks", "poor"],
     regret: ["regret", "wish", "should have", "mistake", "wrong choice"],
-    sick: ["sick", "unwell", "ill", "fever", "cold", "flu", "pain", "aching"],
+    sick: ["sick", "unwell", "ill", "illness", "fever", "cold", "flu", "pain", "aching", "stomach pain", "acidity", "dehydration", "digestion", "heavy meal", "weak"],
 
     // --- COGNITIVE / MIXED ---
-    stress: ["stress", "stressed", "pressure", "overwhelmed", "deadline", "busy", "tired", "exhausted", "drained", "burnout"],
+    stress: ["stress", "stressed", "pressure", "overwhelmed", "deadline", "busy", "tired", "exhausted", "drained", "burnout", "low energy", "mentally exhausted", "hot", "overheated", "summer", "heat", "cold weather", "winter", "irritated"],
     confusion: ["confused", "lost", "don't understand", "weird", "puzzle", "baffled", "what"],
     uncertainty: ["uncertain", "unsure", "maybe", "doubt", "don't know", "possibility", "indecisive"],
     surprise: ["surprise", "shock", "shocked", "unexpected", "wow", "sudden", "amazed"],
@@ -40,7 +40,7 @@ export const EMOTION_LEXICON = {
     anticipation: ["anticipate", "wait", "waiting", "expecting", "hoping", "look forward"],
 
     // --- POSITIVE ---
-    joy: ["joy", "happiness", "delight", "glad", "smile", "laugh", "fun", "good", "great"],
+    joy: ["joy", "happiness", "delight", "glad", "smile", "laugh", "fun", "good", "great", "festive", "outing", "party", "celebration"],
     happy: ["happy", "cheerful", "joyful", "delighted", "content", "pleased"],
     relaxed: ["relaxed", "chill", "calm", "peaceful", "unwind", "easygoing"],
     excitement: ["excited", "exciting", "pumped", "hype", "thrilled", "awesome", "energetic"],
@@ -50,7 +50,7 @@ export const EMOTION_LEXICON = {
     relief: ["relief", "relieved", "finally", "done", "safe", "calm"],
 
     // --- NEUTRAL ---
-    neutral: ["okay", "fine", "normal", "nothing", "bored", "meh", "so-so"]
+    neutral: ["okay", "fine", "normal", "nothing", "bored", "meh", "so-so", "hungry", "craving", "appetite", "lazy", "indifferent", "workout", "fitness", "diet"]
 };
 
 // Conflict Words (Physics Boosters)

@@ -10,7 +10,8 @@ export default function ModernInputBar({
     setIngredientsInput,
     handleChatSubmit,
     handleVoiceClick,
-    handleImageUpload, // NEW
+    handleImageUpload,
+    onOpenCamera, // NEW
     assistantState,
     isLoading
 }) {
@@ -197,7 +198,7 @@ export default function ModernInputBar({
                         {/* A2. Image Upload (Mood) */}
                         {handleImageUpload && (
                             <>
-                                <button type="button" onClick={() => moodInputRef.current.click()} className="p-2 rounded-full hover:bg-white/10 text-gray-400 transition-colors" title="Scan Mood (Face)">
+                                <button type="button" onClick={() => moodInputRef.current.click()} className="p-2 rounded-full hover:bg-white/10 text-gray-400 transition-colors" title="Scan Mood (Image)">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M8 14s1.5 2 4 2 4-2 4-2" /><line x1="9" y1="9" x2="9.01" y2="9" /><line x1="15" y1="9" x2="15.01" y2="9" /></svg>
                                 </button>
                                 <input
@@ -207,6 +208,13 @@ export default function ModernInputBar({
                                     onChange={handleImageUpload}
                                     className="hidden"
                                 />
+                                
+                                {/* A3. Webcam Scan (Mood) */}
+                                {onOpenCamera && (
+                                    <button type="button" onClick={onOpenCamera} className="p-2 rounded-full hover:bg-white/10 text-indigo-400 transition-colors" title="Live Face Scan">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                                    </button>
+                                )}
                             </>
                         )}
 

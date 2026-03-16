@@ -7,6 +7,7 @@ import ChefsNote from '../components/ChefsNote';
 import ModernInputBar from '../components/ModernInputBar';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import Camera from '../components/Camera';
 import { analyzeTrajectory } from '../evm/trajectory';
 import { explainVector } from '../evm/fusion';
 
@@ -23,6 +24,7 @@ export default function HomePage() {
     const [predictedMood, setPredictedMood] = useState('neutral');
     const [isListening, setIsListening] = useState(false); // Voice State
     const [isAnalyzingImage, setIsAnalyzingImage] = useState(false); // Image State
+    const [isCameraOpen, setIsCameraOpen] = useState(false); // NEW Camera State
     const [errorMsg, setErrorMsg] = useState(null); // Error State
 
     // Helper: Show Error & Auto-clear
@@ -92,6 +94,38 @@ export default function HomePage() {
             console.error(e);
             setIsAnalyzingImage(false);
             alert("Error uploading image");
+        }
+    };
+
+    const handleEmotionDetected = async (detectedMood) => {
+        setIsCameraOpen(false);
+        setInput(`(Face Scan: ${detectedMood})`);
+        
+        // Trigger Search
+        setViewState('analyzing');
+        try {
+            const foodRes = await fetch('/api/suggestFood', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    text: `I feel ${detectedMood}`,
+                    ingredients,
+                    moodOverride: detectedMood
+                })
+            });
+            const foodData = await foodRes.json();
+            
+            setResultData(foodData);
+            setPredictedMood(foodData.predictedMood);
+            
+            let newVector = defaultVector;
+            if (foodData.vector) setVector(foodData.vector);
+            
+            setViewState('result');
+        } catch(e) {
+            console.error(e);
+            setViewState('idle');
+            showError("Analysis failed.");
         }
     };
 
@@ -236,6 +270,7 @@ export default function HomePage() {
                                 handleChatSubmit={(e) => { e?.preventDefault(); handleSearch(input); }}
                                 handleVoiceClick={handleVoiceClick}
                                 handleImageUpload={handleImageUpload} // NEW
+                                onOpenCamera={() => setIsCameraOpen(true)} // NEW
                                 assistantState={isListening ? 'listening' : isAnalyzingImage ? 'analyzing' : 'idle'} // UPDATED
                                 isLoading={viewState === 'analyzing'}
                             />
@@ -247,6 +282,13 @@ export default function HomePage() {
                                 onChange={handleImageUpload}
                             />
                         </motion.div>
+                    )}
+
+                    {isCameraOpen && (
+                        <Camera 
+                            onClose={() => setIsCameraOpen(false)} 
+                            onEmotionDetected={handleEmotionDetected} 
+                        />
                     )}
 
                     {/* ANALYZING STATE: Simple Loader */}
@@ -287,6 +329,7 @@ export default function HomePage() {
                                     confidence={resultData.confidenceScore}
                                     imageUrl={resultData.imageUrl} // NEW
                                     price={resultData.price} // NEW
+                                    calories={resultData.calories} // NEW
                                     vector={resultData.vector} // NEW
                                 />
                             </div>
@@ -300,6 +343,9 @@ export default function HomePage() {
                                     explanation={explanation}
                                     userInput={input} // NEW
                                     healthAdvice={resultData.healthAdvice} // NEW: Doctor Mode
+                                    moodCondition={resultData.moodCondition} // NEW
+                                    suggestedCalorieRange={resultData.suggestedCalorieRange} // NEW
+                                    healthPurpose={resultData.healthPurpose} // NEW
                                 />
                             </div>
 
